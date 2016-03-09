@@ -54,9 +54,10 @@ module Slather
     end
 
     def line_number_in_line(line)
-      line =~ /^(\s*)(\d*)\|(\s*)(\d+)\|/
-      if $4 != nil
-        match = $4.strip
+      line =~ /^(\s*)(\d*)(\.\d)?(k)?\|(\s*)(\d+)(\.\d)?(k)?\|/
+
+      if $6 != nil
+        match = $6.strip
         case match
           when /[0-9]+/
             return match.to_i
@@ -73,7 +74,7 @@ module Slather
 
     def coverage_for_line(line)
       line = line.gsub(":", "|")
-      line =~ /^(\s*)(\d*)\|/
+      line =~ /^(\s*)(\d*)(\.\d)?(k)?\|(\s*)(\d+)(\.\d)?(k)?\|/
 
       if $2 == nil
         return nil
