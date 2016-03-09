@@ -113,12 +113,12 @@ module Slather
 
     def profdata_coverage_dir
       raise StandardError, "The specified build directory (#{self.build_directory}) does not exist" unless File.exists?(self.build_directory)
-      dir = nil
-      if self.scheme
-        dir = Dir[File.join("#{build_directory}","/**/CodeCoverage/#{self.scheme}")].first
-      else
-        dir = Dir[File.join("#{build_directory}","/**/#{first_product_name}")].first
-      end
+      dir = Dir[File.join("#{build_directory}","/**/CodeCoverage/#{self.scheme}")].first
+      # if self.scheme
+      #   dir = Dir[File.join("#{build_directory}","/**/CodeCoverage/#{self.scheme}")].first
+      # else
+      #   dir = Dir[File.join("#{build_directory}","/**/#{first_product_name}")].first
+      # end
 
       raise StandardError, "No coverage directory found. Are you sure your project is setup for generating coverage files? Try `slather setup your/project.xcodeproj`" unless dir != nil
       dir
