@@ -120,6 +120,11 @@ module Slather
       #   dir = Dir[File.join("#{build_directory}","/**/#{first_product_name}")].first
       # end
 
+      if dir == nil
+        # Xcode 7.3 moved the location of Coverage.profdata
+        dir = Dir[File.join("#{build_directory}","/**/CodeCoverage")].first
+      end
+
       raise StandardError, "No coverage directory found. Are you sure your project is setup for generating coverage files? Try `slather setup your/project.xcodeproj`" unless dir != nil
       dir
     end
@@ -294,11 +299,14 @@ module Slather
       xctest_bundle_file_directory = Pathname.new(xctest_bundle).dirname
       app_bundle = Dir["#{xctest_bundle_file_directory}/#{search_for}.app"].first
       dynamic_lib_bundle = Dir["#{xctest_bundle_file_directory}/#{search_for}.framework"].first
+      matched_xctest_bundle = Dir["#{xctest_bundle_file_directory}/#{search_for}.xctest"].first
 
       if app_bundle != nil
         find_binary_file_for_app(app_bundle)
       elsif dynamic_lib_bundle != nil
         find_binary_file_for_dynamic_lib(dynamic_lib_bundle)
+      elsif matched_xctest_bundle != nil
+        find_binary_file_for_static_lib(matched_xctest_bundle)
       else
         find_binary_file_for_static_lib(xctest_bundle)
       end
