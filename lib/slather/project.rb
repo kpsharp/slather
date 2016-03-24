@@ -290,7 +290,7 @@ module Slather
 
     def find_binary_file
       xctest_bundle = Dir["#{profdata_coverage_dir}/**/*.xctest"].reject { |bundle|
-        bundle.include? "-Runner.app/PlugIns/"
+        bundle.include?("/PlugIns/") || bundle.include?("-Runner.app/PlugIns/")
       }.first
       raise StandardError, "No product binary found in #{profdata_coverage_dir}. Are you sure your project is setup for generating coverage files? Try `slather setup your/project.xcodeproj`" unless xctest_bundle != nil
 
